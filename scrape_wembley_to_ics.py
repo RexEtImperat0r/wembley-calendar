@@ -233,11 +233,19 @@ def build_calendar(events: list[dict]) -> str:
             fold_ical_line(f"LOCATION:{ical_escape(event['location'])}"),
             "STATUS:CONFIRMED",
             "TRANSP:TRANSPARENT",
-            "BEGIN:VALARM",
-            "ACTION:DISPLAY",
-            "TRIGGER:-P1D",
-            fold_ical_line("DESCRIPTION:Reminder: Wembley Stadium event tomorrow"),
-            "END:VALARM",
+           # Calculate alert time: 09:00 the day before (UTC)
+alert_dt = datetime.combine(day - timedelta(days=1), datetime.min.time()) \
+           .replace(hour=9)
+
+alert_utc = alert_dt.strftime("%Y%m%dT%H%M%S")
+
+lines.extend([
+    "BEGIN:VALARM",
+    "ACTION:DISPLAY",
+    f"TRIGGER;VALUE=DATE-TIME:{alert_utc}",
+    fold_ical_line("DESCRIPTION:Reminder: Wembley Stadium event tomorrow at 09:00"),
+    "END:VALARM",
+])
             "END:VEVENT",
         ])
 
