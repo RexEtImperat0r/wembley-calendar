@@ -211,7 +211,7 @@ def build_calendar(events: list[dict]) -> str:
         uid_source = f"{day.isoformat()}|{event['title']}|{event['subtitle'] or ''}"
         uid = hashlib.sha256(uid_source.encode("utf-8")).hexdigest()[:24] + "@wembley-feed"
 
-        summary = "Possible road closure - Wembley Stadium"
+        summary = "Possible Road Closure - Wembley Stadium"
 
         description_parts = [
             f"Event: {event['title']}",
@@ -240,8 +240,8 @@ def build_calendar(events: list[dict]) -> str:
             "TRANSP:TRANSPARENT",
             "BEGIN:VALARM",
             "ACTION:DISPLAY",
-            f"TRIGGER;VALUE=DATE-TIME:{alert_str}",
-            fold_ical_line("DESCRIPTION:Reminder: Wembley Stadium event tomorrow at 09:00"),
+            "TRIGGER:-PT15H",
+            fold_ical_line("DESCRIPTION:Reminder: Wembley Stadium Event Tomorrow"),
             "END:VALARM",
             "END:VEVENT",
         ])
