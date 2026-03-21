@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Wembley Stadium Event Days Calendar</title>
+</head>
+<body>
+  <h1>Wembley Stadium Event Days Calendar</h1>
+  <p>This repository publishes a subscribed iCalendar feed for Wembley Stadium event days.</p>
+  <p><a href="./wembley-events.ics">Subscribe to the ICS feed</a></p>
+</body>
+</html>
