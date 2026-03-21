@@ -222,6 +222,11 @@ def build_calendar(events: list[dict]) -> str:
 
         description = "\\n".join(ical_escape(part) for part in description_parts)
 
+        # Alert at 09:00 local time on the day before the event
+        alert_date = day - timedelta(days=1)
+        alert_dt = datetime.combine(alert_date, datetime.min.time()).replace(hour=9)
+        alert_str = alert_dt.strftime("%Y%m%dT%H%M%S")
+
         lines.extend([
             "BEGIN:VEVENT",
             f"UID:{uid}",
@@ -233,19 +238,11 @@ def build_calendar(events: list[dict]) -> str:
             fold_ical_line(f"LOCATION:{ical_escape(event['location'])}"),
             "STATUS:CONFIRMED",
             "TRANSP:TRANSPARENT",
-# Calculate alert time: 09:00 the day before (local time)
-alert_date = day - timedelta(days=1)
-alert_dt = datetime.combine(alert_date, datetime.min.time()).replace(hour=9)
-
-alert_str = alert_dt.strftime("%Y%m%dT%H%M%S")
-
-lines.extend([
-    "BEGIN:VALARM",
-    "ACTION:DISPLAY",
-    f"TRIGGER;VALUE=DATE-TIME:{alert_str}",
-    fold_ical_line("DESCRIPTION:Reminder: Wembley Stadium event tomorrow at 09:00"),
-    "END:VALARM",
-])
+            "BEGIN:VALARM",
+            "ACTION:DISPLAY",
+            f"TRIGGER;VALUE=DATE-TIME:{alert_str}",
+            fold_ical_line("DESCRIPTION:Reminder: Wembley Stadium event tomorrow at 09:00"),
+            "END:VALARM",
             "END:VEVENT",
         ])
 
